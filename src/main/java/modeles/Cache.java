@@ -29,4 +29,23 @@ public class Cache {
     private User user;
     @OneToMany(mappedBy = "cache")
     private List<Visite> listeVisite;
+
+    public Cache(String id,
+                 String coordonnees,
+                 String etat,
+                 String nature,
+                 String idType,
+                 String idLieu,
+                 User user
+    ) {
+      this.id = id;
+      this.coordonnees = coordonnees;
+      this.etat = etat;
+      this.nature = nature;
+      this.idType = idType;
+      this.idLieu = idLieu;
+      this.user = user;
+    }
+
+    public Cache() {}
 }

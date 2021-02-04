@@ -17,4 +17,11 @@ public class Type {
     private String id;
     @Column(name = "type")
     private String type;
+
+    public Type(String id, String type) {
+        this.id = id;
+        this.type = type;
+    }
+
+    public Type() {}
 }

@@ -26,7 +26,7 @@ Afin de compléter notre modèle, nous allons créer une entité pour représent
 
 On obtient alors un diagramme UML comme suit :
 
-<img src="D:\Images\Capture.PNG" alt="Capture" style="zoom:80%;" />
+<img src="Capture.PNG" alt="Capture" style="zoom:80%;" />
 
 ## Schéma de base de données
 

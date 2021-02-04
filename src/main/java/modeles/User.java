@@ -20,4 +20,12 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Cache> listeCache;
+    @OneToMany(mappedBy = "user")
+    private List<Visite> listeVisite;
+
+    public User(String id, String pseudo, String description) {
+        this.id = id;
+        this.pseudo = pseudo;
+        this.description = description;
+    }
 }

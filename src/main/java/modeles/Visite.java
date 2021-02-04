@@ -24,4 +24,7 @@ public class Visite {
     @ManyToOne
     @JoinColumn(name = "id_cache")
     private Cache cache;
+    @ManyToOne
+    @JoinColumn(name = "id_user")
+    private User user;
 }
