@@ -20,9 +20,9 @@ public class Cache {
     @Column(name = "nature")
     private String nature;
     @Column(name = "id_type")
-    private int idType;
+    private String idType;
     @Column(name = "id_lieu")
-    private int idLieu;
+    private String idLieu;
 
     @JoinColumn(name = "id_user")
     @ManyToOne
