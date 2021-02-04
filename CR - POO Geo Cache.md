@@ -30,7 +30,7 @@ On obtient alors un diagramme UML comme suit :
 
 ## Schéma de base de données
 
-Ainsi, nous avons pu créer notre base de données MYSQL comme suit : <img src="C:\Users\cyroc\AppData\Roaming\Typora\typora-user-images\image-20210204101945273.png" alt="image-20210204101945273" style="zoom:80%;" />
+Ainsi, nous avons pu créer notre base de données MYSQL comme suit : <img src="schema_bdd.PNG" alt="image-20210204101945273" style="zoom:80%;" />
 
 
 
