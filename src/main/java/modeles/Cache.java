@@ -19,15 +19,14 @@ public class Cache {
     private String etat;
     @Column(name = "nature")
     private String nature;
-
-    @JoinColumn(name = "id_type")
-    private Type type;
-    @JoinColumn(name = "id_lieu")
-    private Lieu geoData;
+    @Column(name = "id_type")
+    private int idType;
+    @Column(name = "id_lieu")
+    private int idLieu;
 
     @JoinColumn(name = "id_user")
     @ManyToOne
     private User user;
-    @OneToMany(mappedBy = "visite")
+    @OneToMany(mappedBy = "cache")
     private List<Visite> listeVisite;
 }
