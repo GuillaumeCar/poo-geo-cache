@@ -19,10 +19,13 @@ public class Cache {
     private String etat;
     @Column(name = "nature")
     private String nature;
-    @Column(name = "id_type")
-    private String idType;
-    @Column(name = "id_lieu")
-    private String idLieu;
+
+    @JoinColumn(name = "id_type")
+    @ManyToOne
+    private Type type;
+    @JoinColumn(name = "id_lieu")
+    @ManyToOne
+    private Lieu lieu;
 
     @JoinColumn(name = "id_user")
     @ManyToOne
@@ -34,16 +37,16 @@ public class Cache {
                  String coordonnees,
                  String etat,
                  String nature,
-                 String idType,
-                 String idLieu,
+                 Type type,
+                 Lieu lieu,
                  User user
     ) {
       this.id = id;
       this.coordonnees = coordonnees;
       this.etat = etat;
       this.nature = nature;
-      this.idType = idType;
-      this.idLieu = idLieu;
+      this.type = type;
+      this.lieu = lieu;
       this.user = user;
     }
 

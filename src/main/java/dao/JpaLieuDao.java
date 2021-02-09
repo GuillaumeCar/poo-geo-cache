@@ -9,7 +9,7 @@ public class JpaLieuDao extends JpaDao<Lieu> implements LieuDao {
     private static JpaLieuDao instance;
 
     public JpaLieuDao() {
-        super();
+        super(Lieu.class);
     }
 
     /**
@@ -22,7 +22,4 @@ public class JpaLieuDao extends JpaDao<Lieu> implements LieuDao {
         }
         return instance;
     }
-
-
-
 }
