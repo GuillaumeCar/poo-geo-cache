@@ -78,7 +78,6 @@ public class Console {
     private void menuUser() {
         JpaUserDao dao = JpaUserDao.getInstance();
         dao.openSession();
-        System.out.println(dao.toString());
         User user;
         do {
             this.menuDepth1("user");
@@ -108,15 +107,27 @@ public class Console {
                     System.out.print("Id : ");
                     choiceEntry = this.scanner.next();
                     user = dao.find(choiceEntry);
-                    System.out.println(user.toString());
+                    if (null != user) {
+                        System.out.println(user.toString());
+                    } else {
+                        System.out.println("Le user n'existe pas");
+                    }
                     break;
                 case "4":
+                    // TODO : Faire l'update
                     break;
                 case "5":
                     System.out.print("Id : ");
                     choiceEntry = this.scanner.next();
+
                     user = dao.find(choiceEntry);
-                    boolean isDeleted = dao.delete(user);
+                    boolean isDeleted;
+                    if (null != user) {
+                         isDeleted = dao.delete(user);
+                    } else {
+                        isDeleted = false;
+                        System.out.println("Le user n'existe pas");
+                    }
                     if (isDeleted) {
                         System.out.println("User supprimé");
                     } else {
@@ -201,7 +212,7 @@ public class Console {
     private void menuLieu() {
         JpaLieuDao dao = JpaLieuDao.getInstance();
         dao.openSession();
-
+        Lieu lieu;
         do {
             this.menuDepth1("lieu");
             System.out.println("Taper return revenir au menu principal");
@@ -211,14 +222,51 @@ public class Console {
             switch (choiceEntry)
             {
                 case "1":
+                    lieu = new Lieu(UUID.randomUUID().toString(), faker.country().capital());
+                    boolean isCreated = dao.create(lieu);
+                    if (isCreated) {
+                        System.out.println("Lieu créé");
+                        System.out.println(lieu);
+                    } else {
+                        System.out.println("Une erreur est survenue lors de la création");
+                    }
                     break;
                 case "2":
+                    Collection<Lieu> lieux = dao.findAll();
+                    for (Lieu data : lieux) {
+                        System.out.println(data.toString());
+                    }
                     break;
                 case "3":
+                    System.out.print("Id : ");
+                    choiceEntry = this.scanner.next();
+                    lieu = dao.find(choiceEntry);
+                    if (null != lieu) {
+                        System.out.println(lieu.toString());
+                    } else {
+                        System.out.println("Le lieu n'existe pas");
+                    }
                     break;
                 case "4":
+                    // TODO : Faire l'update
                     break;
                 case "5":
+                    System.out.print("Id : ");
+                    choiceEntry = this.scanner.next();
+
+                    lieu = dao.find(choiceEntry);
+                    boolean isDeleted;
+                    if (null != lieu) {
+                        isDeleted = dao.delete(lieu);
+                    } else {
+                        isDeleted = false;
+                        System.out.println("Le lieu n'existe pas");
+                    }
+                    if (isDeleted) {
+                        System.out.println("Lieu supprimé");
+                    } else {
+                        System.out.println("Une erreur est survenue lors de la suppression");
+                    }
                     break;
                 case "return":
                     break;
@@ -231,7 +279,7 @@ public class Console {
     private void menuType() {
         JpaTypeDao dao = JpaTypeDao.getInstance();
         dao.openSession();
-
+        Type type;
         do {
             this.menuDepth1("type");
             System.out.println("Taper return revenir au menu principal");
@@ -241,14 +289,51 @@ public class Console {
             switch (choiceEntry)
             {
                 case "1":
+                    type = new Type(UUID.randomUUID().toString(), "traditionnelle");
+                    boolean isCreated = dao.create(type);
+                    if (isCreated) {
+                        System.out.println("Type créé");
+                        System.out.println(type);
+                    } else {
+                        System.out.println("Une erreur est survenue lors de la création");
+                    }
                     break;
                 case "2":
+                    Collection<Type> types = dao.findAll();
+                    for (Type data : types) {
+                        System.out.println(data.toString());
+                    }
                     break;
                 case "3":
+                    System.out.print("Id : ");
+                    choiceEntry = this.scanner.next();
+                    type = dao.find(choiceEntry);
+                    if (null != type) {
+                        System.out.println(type.toString());
+                    } else {
+                        System.out.println("Le type n'existe pas");
+                    }
                     break;
                 case "4":
+                    // TODO : Faire l'update
                     break;
                 case "5":
+                    System.out.print("Id : ");
+                    choiceEntry = this.scanner.next();
+
+                    type = dao.find(choiceEntry);
+                    boolean isDeleted;
+                    if (null != type) {
+                        isDeleted = dao.delete(type);
+                    } else {
+                        isDeleted = false;
+                        System.out.println("Le type n'existe pas");
+                    }
+                    if (isDeleted) {
+                        System.out.println("Type supprimé");
+                    } else {
+                        System.out.println("Une erreur est survenue lors de la suppression");
+                    }
                     break;
                 case "return":
                     break;
