@@ -15,8 +15,8 @@ public class Test2 {
 //        findAllLieux();
 //        findLieu();
 //        createUser();
-//        createVisite();
-        findCacheByUser();
+        createVisite();
+//        findCacheByUser();
     }
 
     private static void findCacheByUser() {
@@ -26,8 +26,9 @@ public class Test2 {
             jpaUserDao.openSession();
             jpaCacheDao.openSession();
 
-            User user = jpaUserDao.find("1adde429-16fe-4d2c-a61d-cd667feb2471");
-            for (Cache cache : user.getListeCache()) {
+            User user = jpaUserDao.find("abd618b3-7e99-4808-9611-0a9ab69a72a4");
+            System.out.println(user.toString());
+            for (Cache cache : jpaCacheDao.getCachesByUser(user)) {
                 System.out.println(cache.toString());
             }
 //            Collection<Cache> caches = jpaCacheDao.getCachesByUser(user);
