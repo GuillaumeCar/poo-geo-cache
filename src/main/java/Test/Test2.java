@@ -5,7 +5,6 @@ import dao.*;
 import modeles.*;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -179,7 +178,5 @@ public class Test2 {
         finally {
             jpaLieuDao.closeSession();
         }
-
-
     }
 }

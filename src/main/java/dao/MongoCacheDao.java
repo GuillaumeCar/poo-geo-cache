@@ -1,14 +1,17 @@
 package dao;
 
-import modeles.*;
+import modeles.Cache;
+import modeles.Lieu;
+import modeles.Type;
+import modeles.User;
 
 import java.util.Collection;
 
-public class JpaCacheDao extends JpaDao<Cache> implements CacheDao {
+public class MongoCacheDao extends MongoDao<Cache> implements CacheDao {
 
-    private static JpaCacheDao instance;
+    private static MongoCacheDao instance;
 
-    public JpaCacheDao() {
+    public MongoCacheDao() {
         super(Cache.class);
     }
 
@@ -16,9 +19,9 @@ public class JpaCacheDao extends JpaDao<Cache> implements CacheDao {
      * Retourne une instance de JpaCacheDao.
      * @return JpaCacheDao
      */
-    public static JpaCacheDao getInstance() {
+    public static MongoCacheDao getInstance() {
         if (instance == null) {
-            instance = new JpaCacheDao();
+            instance = new MongoCacheDao();
         }
         return instance;
     }
