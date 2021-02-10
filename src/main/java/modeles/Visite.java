@@ -3,6 +3,7 @@ package modeles;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Data
@@ -15,7 +16,7 @@ public class Visite {
     @Column(name = "photo")
     private String photo;
     @Column(name = "date")
-    private String date;
+    private Date date;
     @Column(name = "commentaire")
     private String commentaire;
     @Column(name = "is_logged")
@@ -27,4 +28,37 @@ public class Visite {
     @ManyToOne
     @JoinColumn(name = "id_user")
     private User user;
+
+    public Visite(
+            String  id,
+            String  photo,
+            Date    date,
+            String  commentaire,
+            boolean isLogged,
+            Cache   cache,
+            User    user
+    ) {
+        this.id          = id;
+        this.photo       = photo;
+        this.date        = date;
+        this.commentaire = commentaire;
+        this.isLogged    = isLogged;
+        this.cache       = cache;
+        this.user        = user;
+    }
+
+    public Visite() {}
+
+    @Override
+    public String toString() {
+        return "Visite{" +
+                "id='" + id + '\'' +
+                ", photo='" + photo + '\'' +
+                ", date=" + date +
+                ", commentaire='" + commentaire + '\'' +
+                ", isLogged=" + isLogged +
+                ", cache=" + cache.toString() +
+                ", userVisiteur=" + user.toString() +
+                "}\n";
+    }
 }

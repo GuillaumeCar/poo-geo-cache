@@ -2,10 +2,8 @@ package modeles;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -17,6 +15,9 @@ public class Type {
     private String id;
     @Column(name = "type")
     private String type;
+
+    @OneToMany(mappedBy = "type")
+    private List<Cache> listeCache;
 
     public Type(String id, String type) {
         this.id = id;
