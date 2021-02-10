@@ -28,4 +28,15 @@ public class User {
         this.pseudo = pseudo;
         this.description = description;
     }
+
+    public User() {}
+
+    @Override
+    public String toString() {
+        return "\n\tUser{" +
+                "id='" + id + '\'' +
+                ", pseudo='" + pseudo + '\'' +
+                ", description='" + description + '\'' +
+                "}";
+    }
 }

@@ -1,6 +1,10 @@
 package dao;
 
+import modeles.Cache;
+import modeles.User;
 import modeles.Visite;
+
+import java.util.Collection;
 
 public class JpaVisiteDao extends JpaDao<Visite> implements VisiteDao {
 
@@ -19,5 +23,13 @@ public class JpaVisiteDao extends JpaDao<Visite> implements VisiteDao {
             instance = new JpaVisiteDao();
         }
         return instance;
+    }
+
+    public Collection<Visite> getVisitesByUser(User user) {
+        return user.getListeVisite();
+    }
+
+    public Collection<Visite> getVisitesByCache(Cache cache) {
+        return cache.getListeVisite();
     }
 }

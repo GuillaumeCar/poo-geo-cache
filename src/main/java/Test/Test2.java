@@ -16,7 +16,32 @@ public class Test2 {
 //        findAllLieux();
 //        findLieu();
 //        createUser();
-        createVisite();
+//        createVisite();
+        findCacheByUser();
+    }
+
+    private static void findCacheByUser() {
+        JpaUserDao jpaUserDao = new JpaUserDao();
+        JpaCacheDao jpaCacheDao = new JpaCacheDao();
+        try {
+            jpaUserDao.openSession();
+            jpaCacheDao.openSession();
+
+            User user = jpaUserDao.find("1adde429-16fe-4d2c-a61d-cd667feb2471");
+            for (Cache cache : user.getListeCache()) {
+                System.out.println(cache.toString());
+            }
+//            Collection<Cache> caches = jpaCacheDao.getCachesByUser(user);
+
+//            for (Cache cache : caches) {
+//                System.out.println(cache.toString());
+//            }
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        } finally {
+            jpaUserDao.closeSession();
+            jpaCacheDao.closeSession();
+        }
     }
 
     private static void createVisite() {
@@ -62,6 +87,19 @@ public class Test2 {
                 System.out.println("Cache created");
             }
 
+            cache = new Cache(
+                    UUID.randomUUID().toString(),
+                    faker.address().latitude() + '/' + faker.address().longitude(),
+                    "ok",
+                    faker.overwatch().hero(),
+                    type,
+                    lieu,
+                    user
+            );
+            if(jpaCacheDao.create(cache)) {
+                System.out.println("Cache created");
+            }
+
             Visite visite = new Visite(
                     UUID.randomUUID().toString(),
                     faker.animal().name(),
@@ -74,9 +112,14 @@ public class Test2 {
             if(jpaVisiteDao.create(visite)) {
                 System.out.println("visite created");
             }
+            System.out.println(visite.toString());
         }
         finally {
             jpaVisiteDao.closeSession();
+            jpaUserDao.closeSession();
+            jpaCacheDao.closeSession();
+            jpaTypeDao.closeSession();
+            jpaLieuDao.closeSession();
         }
     }
 

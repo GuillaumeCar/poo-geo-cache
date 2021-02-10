@@ -20,7 +20,4 @@ public class JpaTypeDao extends JpaDao<Type> implements TypeDao {
         }
         return instance;
     }
-
-
-
 }

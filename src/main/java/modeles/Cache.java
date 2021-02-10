@@ -51,4 +51,17 @@ public class Cache {
     }
 
     public Cache() {}
+
+    @Override
+    public String toString() {
+        return "\n\tCache{" +
+                "id='" + id + '\'' +
+                ", coordonnees='" + coordonnees + '\'' +
+                ", etat='" + etat + '\'' +
+                ", nature='" + nature + '\'' +
+                ", type=" + type.toString() +
+                ", lieu=" + lieu.toString() +
+                ", userPropriétaire=" + user.toString() +
+                "}";
+    }
 }

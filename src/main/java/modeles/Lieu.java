@@ -2,10 +2,8 @@ package modeles;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -18,6 +16,10 @@ public class Lieu {
     private String id;
     @Column(name = "geodata")
     private String geoData;
+
+
+    @OneToMany(mappedBy = "lieu")
+    private List<Cache> listeCache;
 
     public Lieu(String UUID, String geoData) {
         this.id = UUID;

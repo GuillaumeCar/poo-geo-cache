@@ -46,4 +46,19 @@ public class Visite {
         this.cache       = cache;
         this.user        = user;
     }
+
+    public Visite() {}
+
+    @Override
+    public String toString() {
+        return "Visite{" +
+                "id='" + id + '\'' +
+                ", photo='" + photo + '\'' +
+                ", date=" + date +
+                ", commentaire='" + commentaire + '\'' +
+                ", isLogged=" + isLogged +
+                ", cache=" + cache.toString() +
+                ", userVisiteur=" + user.toString() +
+                "}\n";
+    }
 }
