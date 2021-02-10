@@ -27,4 +27,12 @@ public class Lieu {
     }
 
     public Lieu() { }
+
+    @Override
+    public String toString() {
+        return "Lieu{" +
+                "id='" + id + '\'' +
+                ", geoData='" + geoData + '\'' +
+                '}';
+    }
 }
