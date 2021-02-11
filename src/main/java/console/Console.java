@@ -99,7 +99,7 @@ public class Console {
             }
         } while (!choiceEntry.equals("exit"));
     }
-    
+
     private void menuUser() {
         UserDao dao = (UserDao) daoMap.get("user");
         dao.openSession();
@@ -162,7 +162,7 @@ public class Console {
                     user = dao.find(choiceEntry);
                     boolean isDeleted;
                     if (null != user) {
-                         isDeleted = dao.delete(user);
+                        isDeleted = dao.delete(user);
                     } else {
                         isDeleted = false;
                         System.out.println("Le user n'existe pas");
@@ -181,7 +181,7 @@ public class Console {
         } while(!choiceEntry.equals("return"));
         dao.closeSession();
     }
-    
+
     private void menuCache() {
         UserDao userDao = (UserDao) daoMap.get("user");
         CacheDao cacheDao = (CacheDao) daoMap.get("cache");
@@ -201,7 +201,7 @@ public class Console {
             System.out.println("7 - FindByType");
             System.out.println("8 - FindByLieu");
             System.out.println("Taper return revenir au menu principal");
-            
+
             choiceEntry = this.scanner.next();
 
             switch (choiceEntry)
@@ -296,7 +296,7 @@ public class Console {
                         System.out.println("Le user n'existe pas.");
                         break;
                     }
-                   caches = cacheDao.getCachesByUser(userSearch);
+                    caches = cacheDao.getCachesByUser(userSearch);
                     for (Cache data : caches) {
                         System.out.println(data.toString());
                     }
@@ -340,7 +340,7 @@ public class Console {
         cacheDao.closeSession();
         lieuDao.closeSession();
     }
-    
+
     private void menuVisite() {
         VisiteDao visiteDao = (VisiteDao) daoMap.get("visite");
         UserDao userDao = (UserDao) daoMap.get("user");
@@ -477,7 +477,7 @@ public class Console {
         visiteDao.closeSession();
         cacheDao.closeSession();
     }
-    
+
     private void menuLieu() {
         LieuDao dao = (LieuDao) daoMap.get("lieu");
         dao.openSession();
@@ -559,7 +559,7 @@ public class Console {
         } while(!choiceEntry.equals("return"));
         dao.closeSession();
     }
-    
+
     private void menuType() {
         TypeDao dao = (TypeDao) daoMap.get("type");
         dao.openSession();
