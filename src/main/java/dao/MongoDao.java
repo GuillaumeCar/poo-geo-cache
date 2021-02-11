@@ -27,10 +27,10 @@ public abstract class MongoDao<T> implements Dao<T> {
 
     public boolean create(T entity) {
         try {
-            Morphia morphia = new Morphia();
-            morphia.map(entity.getClass());
-            Datastore datastore = morphia.createDatastore(mongoClient,"geocache");
-            datastore.save(entity);
+            Morphia morphia = new Morphia(); // on créé une instance de morphia
+            morphia.map(entity.getClass()); // on mappe cette instance a une classe
+            Datastore datastore = morphia.createDatastore(mongoClient,"geocache"); // on créé un datastore
+            datastore.save(entity); // on sauvegarde l'entité en passant par le datastore
             return true;
         } catch (Exception E) {
             System.out.println(E.toString());

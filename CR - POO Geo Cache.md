@@ -40,14 +40,20 @@ Nous avons réfléchi à un moyen facile de passer de MySQL à MongoDB, pour cec
 
 ![SchémaDAO](C:\Users\Romain\Documents\IG2I\LA2\POO\poo-geo-cache\SchémaDAO.PNG) 
 
-
-
 Une fois avoir fait la partie JPA, nous avons fait la partie Mongo de la même manière. Ainsi, nous avons une classe JpaDAO et une classe MongoDAO. 
 
 La différence entre ces deux classes est la méthode pour récupérer les données. Et oui, il faut d'un côté créer une session et un EntityManager (JPA) et de l'autre, il faut créer une connexion à la base Mongo via un MongoClient.
 
-Du côté de JPA, nous pouvons directement intéragir avec les entités et la base de données via les annotations; par contre du côté de mongo 
+Du côté de JPA, nous pouvons directement intéragir avec les entités et la base de données via les annotations et l'EntityManager mentionné plus tôt; par contre du côté de mongo, il faut créer un objet "Document" ou "BSON".
+Cependant, après moultes recherches, nous avons trouvé une solution appelée Morphia, qui permet d'utiliser nos entités pour la sauvegarde dans MongoDB.
 
+Exemple dans la classe MongoDao.Java :
+```java
+Morphia morphia = new Morphia(); // on créé une instance de morphia
+morphia.map(entity.getClass()); // on mappe cette instance a une classe
 
+Datastore datastore = morphia.createDatastore(mongoClient,"geocache"); // on créé un datastore
+datastore.save(entity); // on sauvegarde l'entité en passant par le datastore
+```
 
 De même, pour chaque entité, il y a une classe JpaEntityDao et une classe MongoEntityDao.
