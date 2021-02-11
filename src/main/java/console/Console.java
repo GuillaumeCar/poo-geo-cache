@@ -147,6 +147,7 @@ public class Console {
                         user.setDescription(faker.witcher().quote());
                         boolean isUpdated = dao.update(user);
                         if (isUpdated) {
+                            System.out.println("Description mise à jour");
                             System.out.println(user.toString());
                         } else {
                             System.out.println("Une erreur est survenue lors de la mise à jour");
@@ -258,6 +259,7 @@ public class Console {
                     choiceEntry = this.scanner.next();
                     cache = cacheDao.find(choiceEntry);
                     if (null != cache) {
+                        System.out.println("Etat mis à jour");
                         cache.setEtat("suspendue");
                         boolean isUpdated = cacheDao.update(cache);
                         if (isUpdated) {
@@ -413,6 +415,7 @@ public class Console {
                         visite.setCommentaire("suspendue");
                         boolean isUpdated = visiteDao.update(visite);
                         if (isUpdated) {
+                            System.out.println("Commentaire mis à jour");
                             System.out.println(visite.toString());
                         } else {
                             System.out.println("Une erreur est survenue lors de la mise à jour");
@@ -522,6 +525,7 @@ public class Console {
                     choiceEntry = this.scanner.next();
                     lieu = dao.find(choiceEntry);
                     if (null != lieu) {
+                        System.out.println("geoData mise à jour");
                         lieu.setGeoData(faker.address().city());
                         boolean isUpdated = dao.update(lieu);
                         if (isUpdated) {
@@ -607,6 +611,7 @@ public class Console {
                         type.setType(faker.food().fruit());
                         boolean isUpdated = dao.update(type);
                         if (isUpdated) {
+                            System.out.println("Type mis à jour");
                             System.out.println(type.toString());
                         } else {
                             System.out.println("Une erreur est survenue lors de la mise à jour");
