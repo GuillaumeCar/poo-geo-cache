@@ -15,8 +15,9 @@ public class Test2 {
 //        findAllLieux();
 //        findLieu();
 //        createUser();
-        createVisite();
 //        findCacheByUser();
+//        createVisite();
+        deleteAllCache();
     }
 
     private static void findCacheByUser() {
@@ -178,6 +179,16 @@ public class Test2 {
         }
         finally {
             jpaLieuDao.closeSession();
+        }
+    }
+
+    private static void deleteAllCache() {
+        JpaCacheDao jpaCacheDao = JpaCacheDao.getInstance();
+        try {
+            jpaCacheDao.openSession();
+            jpaCacheDao.deleteAll();
+        } finally {
+            jpaCacheDao.closeSession();
         }
     }
 }
