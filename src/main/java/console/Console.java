@@ -1,9 +1,6 @@
 package console;
 
-import java.util.Collection;
-import java.util.Locale;
-import java.util.Scanner;
-import java.util.UUID;
+import java.util.*;
 
 import com.github.javafaker.Faker;
 import dao.*;
@@ -16,6 +13,7 @@ public class Console {
     private Faker faker;
 
     private String choiceEntry;
+    private Map<String, Object> daoMap = new HashMap<String, Object>();
 
     public static void main(String[] args) {
         Console c = new Console();
@@ -37,14 +35,41 @@ public class Console {
     }
 
     private void menuDepth1(String entity) {
-            System.out.println("1 - Create " + entity);
-            System.out.println("2 - FindAll");
-            System.out.println("3 - Find " + entity);
-            System.out.println("4 - Update " + entity);
-            System.out.println("5 - Delete " + entity);
+        System.out.println("1 - Create " + entity);
+        System.out.println("2 - FindAll");
+        System.out.println("3 - Find " + entity);
+        System.out.println("4 - Update " + entity);
+        System.out.println("5 - Delete " + entity);
+    }
+
+    private void initDao(String mode) {
+        switch (mode.toLowerCase()) {
+            case "jpa":
+                daoMap.put("user", JpaUserDao.getInstance());
+                daoMap.put("cache", JpaCacheDao.getInstance());
+                daoMap.put("visite", JpaVisiteDao.getInstance());
+                daoMap.put("type", JpaTypeDao.getInstance());
+                daoMap.put("lieu", JpaLieuDao.getInstance());
+                break;
+            case "mongo":
+                daoMap.put("user", MongoUserDao.getInstance());
+                daoMap.put("cache", MongoCacheDao.getInstance());
+                daoMap.put("visite", MongoVisiteDao.getInstance());
+                daoMap.put("type", MongoTypeDao.getInstance());
+                daoMap.put("lieu", MongoLieuDao.getInstance());
+                break;
+            default:
+                System.out.println("Mauvais type demandé, merci de spécifier JPA ou Mongo");
+                System.exit(-2);
+        }
     }
 
     private void run() {
+        System.out.println("Mode de stockage de données ? [JPA/Mongo]");
+        choiceEntry = this.scanner.next();
+
+        initDao(choiceEntry);
+
         do {
             this.homeMenu();
 
@@ -72,12 +97,13 @@ public class Console {
                 default:
                     System.out.println("Choix invalide");
             }
-        } while (!choiceEntry.equals("return"));
+        } while (!choiceEntry.equals("exit"));
     }
     
     private void menuUser() {
-        JpaUserDao dao = JpaUserDao.getInstance();
+        UserDao dao = (UserDao) daoMap.get("user");
         dao.openSession();
+
         User user;
         do {
             this.menuDepth1("user");
@@ -114,7 +140,20 @@ public class Console {
                     }
                     break;
                 case "4":
-                    // TODO : Faire l'update
+                    System.out.print("Id : ");
+                    choiceEntry = this.scanner.next();
+                    user = dao.find(choiceEntry);
+                    if (null != user) {
+                        user.setDescription(faker.witcher().quote());
+                        boolean isUpdated = dao.update(user);
+                        if (isUpdated) {
+                            System.out.println(user.toString());
+                        } else {
+                            System.out.println("Une erreur est survenue lors de la mise à jour");
+                        }
+                    } else {
+                        System.out.println("Le user n'existe pas");
+                    }
                     break;
                 case "5":
                     System.out.print("Id : ");
@@ -140,12 +179,21 @@ public class Console {
                     System.out.println("Choix invalide");
             }
         } while(!choiceEntry.equals("return"));
+        dao.closeSession();
     }
     
     private void menuCache() {
-        JpaCacheDao dao = JpaCacheDao.getInstance();
-        dao.openSession();
+        UserDao userDao = (UserDao) daoMap.get("user");
+        CacheDao cacheDao = (CacheDao) daoMap.get("cache");
+        TypeDao typeDao = (TypeDao) daoMap.get("type");
+        LieuDao lieuDao = (LieuDao) daoMap.get("lieu");
+        userDao.openSession();
+        cacheDao.openSession();
+        typeDao.openSession();
+        lieuDao.openSession();
 
+        Cache cache;
+        Collection<Cache> caches;
         do {
             this.menuDepth1("cache");
 
@@ -159,14 +207,127 @@ public class Console {
             switch (choiceEntry)
             {
                 case "1":
+                    User user = (User) userDao.findAll().toArray()[0];
+                    Type type = (Type) typeDao.findAll().toArray()[0];
+                    Lieu lieu = (Lieu) lieuDao.findAll().toArray()[0];
+                    if (null == user) {
+                        System.out.println("Créer un user avant.");
+                        return;
+                    } else if (null == type) {
+                        System.out.println("Créer un type avant.");
+                        return;
+                    } else if (null == lieu) {
+                        System.out.println("Créer un lieu avant.");
+                        return;
+                    }
+                    cache = new Cache(
+                            UUID.randomUUID().toString(),
+                            faker.address().latitude() + '/' + faker.address().longitude(),
+                            "active",
+                            "physique",
+                            type,
+                            lieu,
+                            user
+                    );
+                    boolean isCreated = cacheDao.create(cache);
+                    if (isCreated) {
+                        System.out.println("Cache créée");
+                        System.out.println(cache);
+                    } else {
+                        System.out.println("Une erreur est survenue lors de la création");
+                    }
                     break;
                 case "2":
+                    caches = cacheDao.findAll();
+                    for (Cache data : caches) {
+                        System.out.println(data.toString());
+                    }
                     break;
                 case "3":
+                    System.out.print("Id : ");
+                    choiceEntry = this.scanner.next();
+                    cache = cacheDao.find(choiceEntry);
+                    if (null != cache) {
+                        System.out.println(cache.toString());
+                    } else {
+                        System.out.println("La cache n'existe pas");
+                    }
                     break;
                 case "4":
+                    System.out.print("Id : ");
+                    choiceEntry = this.scanner.next();
+                    cache = cacheDao.find(choiceEntry);
+                    if (null != cache) {
+                        cache.setEtat("suspendue");
+                        boolean isUpdated = cacheDao.update(cache);
+                        if (isUpdated) {
+                            System.out.println(cache.toString());
+                        } else {
+                            System.out.println("Une erreur est survenue lors de la mise à jour");
+                        }
+                    } else {
+                        System.out.println("La cache n'existe pas");
+                    }
                     break;
                 case "5":
+                    System.out.print("Id : ");
+                    choiceEntry = this.scanner.next();
+
+                    cache = cacheDao.find(choiceEntry);
+                    boolean isDeleted;
+                    if (null != cache) {
+                        isDeleted = cacheDao.delete(cache);
+                    } else {
+                        isDeleted = false;
+                        System.out.println("La cache n'existe pas");
+                    }
+                    if (isDeleted) {
+                        System.out.println("Cache supprimée");
+                    } else {
+                        System.out.println("Une erreur est survenue lors de la suppression");
+                    }
+                    break;
+                case "6":
+                    System.out.print("Id user : ");
+                    choiceEntry = this.scanner.next();
+
+                    User userSearch = userDao.find(choiceEntry);
+                    if (null == userSearch) {
+                        System.out.println("Le user n'existe pas.");
+                        break;
+                    }
+                   caches = cacheDao.getCachesByUser(userSearch);
+                    for (Cache data : caches) {
+                        System.out.println(data.toString());
+                    }
+                    break;
+                case "7":
+                    System.out.print("Id type : ");
+                    choiceEntry = this.scanner.next();
+
+                    Type typeSearch = typeDao.find(choiceEntry);
+                    if (null == typeSearch) {
+                        System.out.println("Le type n'existe pas.");
+                        break;
+                    }
+                    caches = cacheDao.getCachesByType(typeSearch);
+                    for (Cache data : caches) {
+                        System.out.println(data.toString());
+                    }
+                    break;
+                case "8":
+                    System.out.print("Id lieu : ");
+                    choiceEntry = this.scanner.next();
+
+                    Lieu lieuSearch = lieuDao.find(choiceEntry);
+                    if (null == lieuSearch) {
+                        System.out.println("Le lieu n'existe pas.");
+                        break;
+                    }
+                    caches = cacheDao.getCachesByLieu(lieuSearch);
+                    for (Cache data : caches) {
+                        System.out.println(data.toString());
+                    }
                     break;
                 case "return":
                     break;
@@ -174,12 +335,22 @@ public class Console {
                     System.out.println("Choix invalide");
             }
         } while(!choiceEntry.equals("return"));
+        userDao.closeSession();
+        typeDao.closeSession();
+        cacheDao.closeSession();
+        lieuDao.closeSession();
     }
     
     private void menuVisite() {
-        JpaVisiteDao dao = JpaVisiteDao.getInstance();
-        dao.openSession();
+        VisiteDao visiteDao = (VisiteDao) daoMap.get("visite");
+        UserDao userDao = (UserDao) daoMap.get("user");
+        CacheDao cacheDao = (CacheDao) daoMap.get("cache");
+        visiteDao.openSession();
+        userDao.openSession();
+        cacheDao.openSession();
 
+        Visite visite;
+        Collection<Visite> visites;
         do {
             this.menuDepth1("visite");
 
@@ -192,14 +363,109 @@ public class Console {
             switch (choiceEntry)
             {
                 case "1":
+                    User user = (User) userDao.findAll().toArray()[0];
+                    Cache cache = (Cache) cacheDao.findAll().toArray()[0];
+                    if (null == user) {
+                        System.out.println("Créer un user avant.");
+                        return;
+                    } else if (null == cache) {
+                        System.out.println("Créer une cache avant.");
+                        return;
+                    }
+                    visite = new Visite(
+                            UUID.randomUUID().toString(),
+                            "",
+                            faker.date().birthday(),
+                            faker.chuckNorris().fact(),
+                            true,
+                            cache,
+                            user
+                    );
+                    boolean isCreated = visiteDao.create(visite);
+                    if (isCreated) {
+                        System.out.println("Visite créée");
+                        System.out.println(visite);
+                    } else {
+                        System.out.println("Une erreur est survenue lors de la création");
+                    }
                     break;
                 case "2":
+                    visites = visiteDao.findAll();
+                    for (Visite data : visites) {
+                        System.out.println(data.toString());
+                    }
                     break;
                 case "3":
+                    System.out.print("Id : ");
+                    choiceEntry = this.scanner.next();
+                    visite = visiteDao.find(choiceEntry);
+                    if (null != visite) {
+                        System.out.println(visite.toString());
+                    } else {
+                        System.out.println("La visite n'existe pas");
+                    }
                     break;
                 case "4":
+                    System.out.print("Id : ");
+                    choiceEntry = this.scanner.next();
+                    visite = visiteDao.find(choiceEntry);
+                    if (null != visite) {
+                        visite.setCommentaire("suspendue");
+                        boolean isUpdated = visiteDao.update(visite);
+                        if (isUpdated) {
+                            System.out.println(visite.toString());
+                        } else {
+                            System.out.println("Une erreur est survenue lors de la mise à jour");
+                        }
+                    } else {
+                        System.out.println("La visite n'existe pas");
+                    }
                     break;
                 case "5":
+                    System.out.print("Id : ");
+                    choiceEntry = this.scanner.next();
+
+                    visite = visiteDao.find(choiceEntry);
+                    boolean isDeleted;
+                    if (null != visite) {
+                        isDeleted = visiteDao.delete(visite);
+                    } else {
+                        isDeleted = false;
+                        System.out.println("La visite n'existe pas");
+                    }
+                    if (isDeleted) {
+                        System.out.println("Visite supprimée");
+                    } else {
+                        System.out.println("Une erreur est survenue lors de la suppression");
+                    }
+                    break;
+                case "6":
+                    System.out.print("Id cache : ");
+                    choiceEntry = this.scanner.next();
+
+                    Cache cacheSearch = cacheDao.find(choiceEntry);
+                    if (null == cacheSearch) {
+                        System.out.println("La cache n'existe pas.");
+                        break;
+                    }
+                    visites = visiteDao.getVisitesByCache(cacheSearch);
+                    for (Visite data : visites) {
+                        System.out.println(data.toString());
+                    }
+                    break;
+                case "7":
+                    System.out.print("Id user : ");
+                    choiceEntry = this.scanner.next();
+
+                    User userSearch = userDao.find(choiceEntry);
+                    if (null == userSearch) {
+                        System.out.println("Le user n'existe pas.");
+                        break;
+                    }
+                    visites = visiteDao.getVisitesByUser(userSearch);
+                    for (Visite data : visites) {
+                        System.out.println(data.toString());
+                    }
                     break;
                 case "return":
                     break;
@@ -207,11 +473,15 @@ public class Console {
                     System.out.println("Choix invalide");
             }
         } while(!choiceEntry.equals("return"));
+        userDao.closeSession();
+        visiteDao.closeSession();
+        cacheDao.closeSession();
     }
     
     private void menuLieu() {
-        JpaLieuDao dao = JpaLieuDao.getInstance();
+        LieuDao dao = (LieuDao) daoMap.get("lieu");
         dao.openSession();
+
         Lieu lieu;
         do {
             this.menuDepth1("lieu");
@@ -248,7 +518,20 @@ public class Console {
                     }
                     break;
                 case "4":
-                    // TODO : Faire l'update
+                    System.out.print("Id : ");
+                    choiceEntry = this.scanner.next();
+                    lieu = dao.find(choiceEntry);
+                    if (null != lieu) {
+                        lieu.setGeoData(faker.address().city());
+                        boolean isUpdated = dao.update(lieu);
+                        if (isUpdated) {
+                            System.out.println(lieu.toString());
+                        } else {
+                            System.out.println("Une erreur est survenue lors de la mise à jour");
+                        }
+                    } else {
+                        System.out.println("Le lieu n'existe pas");
+                    }
                     break;
                 case "5":
                     System.out.print("Id : ");
@@ -274,11 +557,13 @@ public class Console {
                     System.out.println("Choix invalide");
             }
         } while(!choiceEntry.equals("return"));
+        dao.closeSession();
     }
     
     private void menuType() {
-        JpaTypeDao dao = JpaTypeDao.getInstance();
+        TypeDao dao = (TypeDao) daoMap.get("type");
         dao.openSession();
+
         Type type;
         do {
             this.menuDepth1("type");
@@ -315,7 +600,20 @@ public class Console {
                     }
                     break;
                 case "4":
-                    // TODO : Faire l'update
+                    System.out.print("Id : ");
+                    choiceEntry = this.scanner.next();
+                    type = dao.find(choiceEntry);
+                    if (null != type) {
+                        type.setType(faker.food().fruit());
+                        boolean isUpdated = dao.update(type);
+                        if (isUpdated) {
+                            System.out.println(type.toString());
+                        } else {
+                            System.out.println("Une erreur est survenue lors de la mise à jour");
+                        }
+                    } else {
+                        System.out.println("Le type n'existe pas");
+                    }
                     break;
                 case "5":
                     System.out.print("Id : ");
@@ -341,5 +639,6 @@ public class Console {
                     System.out.println("Choix invalide");
             }
         } while(!choiceEntry.equals("return"));
+        dao.closeSession();
     }
 }
