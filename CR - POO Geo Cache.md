@@ -34,3 +34,20 @@ Ainsi, nous avons pu créer notre base de données MYSQL comme suit : <img src="
 
 
 
+## Mise en place du DAO
+
+Nous avons réfléchi à un moyen facile de passer de MySQL à MongoDB, pour ceci, nous avons donc choisi de suivre ce schéma :
+
+![SchémaDAO](C:\Users\Romain\Documents\IG2I\LA2\POO\poo-geo-cache\SchémaDAO.PNG) 
+
+
+
+Une fois avoir fait la partie JPA, nous avons fait la partie Mongo de la même manière. Ainsi, nous avons une classe JpaDAO et une classe MongoDAO. 
+
+La différence entre ces deux classes est la méthode pour récupérer les données. Et oui, il faut d'un côté créer une session et un EntityManager (JPA) et de l'autre, il faut créer une connexion à la base Mongo via un MongoClient.
+
+Du côté de JPA, nous pouvons directement intéragir avec les entités et la base de données via les annotations; par contre du côté de mongo 
+
+
+
+De même, pour chaque entité, il y a une classe JpaEntityDao et une classe MongoEntityDao.
