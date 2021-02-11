@@ -2,11 +2,11 @@ package dao;
 
 import modeles.Lieu;
 
-public class JpaLieuDao extends JpaDao<Lieu> implements LieuDao {
+public class MongoLieuDao extends MongoDao<Lieu> implements LieuDao {
 
-    private static JpaLieuDao instance;
+    private static MongoLieuDao instance;
 
-    public JpaLieuDao() {
+    public MongoLieuDao() {
         super(Lieu.class);
     }
 
@@ -14,9 +14,9 @@ public class JpaLieuDao extends JpaDao<Lieu> implements LieuDao {
      * Retourne une instance de JpaLieuDao.
      * @return JpaLieuDao
      */
-    public static JpaLieuDao getInstance() {
+    public static MongoLieuDao getInstance() {
         if (instance == null) {
-            instance = new JpaLieuDao();
+            instance = new MongoLieuDao();
         }
         return instance;
     }

@@ -1,10 +1,6 @@
 package dao;
 
-import modeles.Cache;
 import modeles.User;
-import modeles.Visite;
-
-import java.util.Collection;
 
 public class JpaUserDao extends JpaDao<User> implements UserDao {
 

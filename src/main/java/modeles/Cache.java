@@ -1,16 +1,19 @@
 package modeles;
 
 import lombok.Data;
+import org.mongodb.morphia.annotations.Reference;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@org.mongodb.morphia.annotations.Entity
 @Data
 @Table(name = "cache")
 public class Cache {
 
     @Id
+    @org.mongodb.morphia.annotations.Id
     @Column(name = "id_cache")
     private String id;
     @Column(name = "coordonnees")
@@ -20,16 +23,20 @@ public class Cache {
     @Column(name = "nature")
     private String nature;
 
+    @Reference()
     @JoinColumn(name = "id_type")
     @ManyToOne
     private Type type;
+    @Reference()
     @JoinColumn(name = "id_lieu")
     @ManyToOne
     private Lieu lieu;
 
+    @Reference
     @JoinColumn(name = "id_user")
     @ManyToOne
     private User user;
+    @Reference
     @OneToMany(mappedBy = "cache")
     private List<Visite> listeVisite;
 

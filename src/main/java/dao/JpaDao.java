@@ -84,12 +84,6 @@ public abstract class JpaDao<T> implements Dao<T> {
         return true;
     }
 
-//    public void close() {
-//        if (_em != null) {
-//            _em.close();
-//        }
-//    }
-
     public T find(String id) {
         return _em.find(this.classEntity, id);
     }
