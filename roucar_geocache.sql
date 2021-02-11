@@ -111,16 +111,16 @@ CREATE TABLE IF NOT EXISTS `visite` (
 -- Contraintes pour la table `cache`
 --
 ALTER TABLE `cache`
-  ADD CONSTRAINT `cache_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`),
-  ADD CONSTRAINT `cache_ibfk_2` FOREIGN KEY (`id_type`) REFERENCES `type` (`id_type`),
-  ADD CONSTRAINT `cache_ibfk_3` FOREIGN KEY (`id_lieu`) REFERENCES `lieu` (`id_lieu`);
+  ADD CONSTRAINT `cache_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`) ON DELETE CASCADE ,
+  ADD CONSTRAINT `cache_ibfk_2` FOREIGN KEY (`id_type`) REFERENCES `type` (`id_type`) ON DELETE CASCADE ,
+  ADD CONSTRAINT `cache_ibfk_3` FOREIGN KEY (`id_lieu`) REFERENCES `lieu` (`id_lieu`) ON DELETE CASCADE ;
 
 --
 -- Contraintes pour la table `visite`
 --
 ALTER TABLE `visite`
-  ADD CONSTRAINT `visite_ibfk_1` FOREIGN KEY (`id_cache`) REFERENCES `cache` (`id_cache`),
-  ADD CONSTRAINT `visite_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`);
+  ADD CONSTRAINT `visite_ibfk_1` FOREIGN KEY (`id_cache`) REFERENCES `cache` (`id_cache`) ON DELETE CASCADE ,
+  ADD CONSTRAINT `visite_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`) ON DELETE CASCADE ;
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 

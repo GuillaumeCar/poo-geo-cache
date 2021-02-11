@@ -16,5 +16,7 @@ public interface Dao<T> {
 
 //    public boolean deleteAll();
 
+    public void openSession();
+
     public void closeSession();
 }
