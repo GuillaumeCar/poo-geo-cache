@@ -6,6 +6,7 @@
 - Nous utilisons Maven pour la gestion des dépendances, il faut donc identifier le projet comme Maven à son ouverture (IntelliJ le propose en bas à droite quand le projet est ouvert)
 - Installer la base de données MySQL via le script fourni *roucar_geocache.sql*
 - Copier coller le fichier *src/main/ressources/hibernate.cfg.xml.dist* en *src/main/ressources/hibernate.cfg.xml* et l'éditer pour la configuration des accès de la base de données : user / password / URL
+- Mettre à jour le fichier *src/main/java/configuration/GeneralConfiguration.java* avec vos valeurs d'environnement  
 - Installer MongoDB Compass et disposer d'un cluster prêt
 - Exécuter la classe *Main.java* 
 
