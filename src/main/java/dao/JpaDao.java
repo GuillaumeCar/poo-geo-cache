@@ -1,5 +1,6 @@
 package dao;
 
+import configuration.GeneralConfiguration;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -7,6 +8,7 @@ import org.hibernate.cfg.Configuration;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.Collection;
@@ -96,19 +98,23 @@ public abstract class JpaDao<T> implements Dao<T> {
         return _em.createQuery(cq).getResultList();
     }
 
-//    public boolean deleteAll() {
-//        EntityTransaction et = this.em.getTransaction();
-//        try {
-//            CriteriaBuilder cb = em.getCriteriaBuilder();
-//            CriteriaDelete<T> cd = cb.createCriteriaDelete(this.entite);
-//            et.begin();
-//            int nbDelete = em.createQuery(cd).executeUpdate();
-//            et.commit();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return false;
-//        }
-//
-//        return true;
-//    }
+    public boolean deleteAll() {
+        try {
+            _em.getTransaction().begin();
+            CriteriaBuilder cb = _em.getCriteriaBuilder();
+            // create delete
+            CriteriaDelete<T> delete = cb.createCriteriaDelete(classEntity);
+            // set the root class
+            Root<T> tacks = delete.from(classEntity);
+            // perform update
+            _em.createQuery(delete).executeUpdate();
+            _em.getTransaction().commit();
+            return true;
+        } catch (Exception E){
+            System.out.println(E.toString());
+            return false;
+        }
+
+
+    }
 }

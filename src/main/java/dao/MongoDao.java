@@ -2,6 +2,7 @@ package dao;
 
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
+import configuration.GeneralConfiguration;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 import java.util.Collection;
@@ -17,8 +18,8 @@ public abstract class MongoDao<T> implements Dao<T> {
     }
 
     public void openSession() {
-        mongoClient = new MongoClient("localhost");
-        database = mongoClient.getDatabase("geocache");
+        mongoClient = new MongoClient(GeneralConfiguration.mongoDatabaseHost, GeneralConfiguration.mongoDatabasePort);
+        database = mongoClient.getDatabase(GeneralConfiguration.mongoDatabaseName);
     }
 
     public void closeSession() {
@@ -29,7 +30,7 @@ public abstract class MongoDao<T> implements Dao<T> {
         try {
             Morphia morphia = new Morphia(); // on créé une instance de morphia
             morphia.map(entity.getClass()); // on mappe cette instance a une classe
-            Datastore datastore = morphia.createDatastore(mongoClient,"geocache"); // on créé un datastore
+            Datastore datastore = morphia.createDatastore(mongoClient, GeneralConfiguration.mongoDatabaseName); // on créé un datastore
             datastore.save(entity); // on sauvegarde l'entité en passant par le datastore
             return true;
         } catch (Exception E) {
@@ -46,7 +47,7 @@ public abstract class MongoDao<T> implements Dao<T> {
         try {
             Morphia morphia = new Morphia();
             morphia.map(entity.getClass());
-            Datastore datastore = morphia.createDatastore(mongoClient,"geocache");
+            Datastore datastore = morphia.createDatastore(mongoClient, GeneralConfiguration.mongoDatabaseName);
             datastore.delete(entity);
             return true;
         } catch (Exception E) {
@@ -57,20 +58,20 @@ public abstract class MongoDao<T> implements Dao<T> {
 
     public T find(String id) {
         Morphia morphia = new Morphia();
-        Datastore datastore = morphia.createDatastore(mongoClient,"geocache");
+        Datastore datastore = morphia.createDatastore(mongoClient, GeneralConfiguration.mongoDatabaseName);
         return datastore.get(classEntity, id);
     }
 
     public Collection<T> findAll() {
         Morphia morphia = new Morphia();
-        Datastore datastore = morphia.createDatastore(mongoClient,"geocache");
+        Datastore datastore = morphia.createDatastore(mongoClient, GeneralConfiguration.mongoDatabaseName);
         return datastore.find(classEntity).asList();
     }
 
     public boolean deleteAll() {
         try {
             Morphia morphia = new Morphia();
-            Datastore datastore = morphia.createDatastore(mongoClient,"geocache");
+            Datastore datastore = morphia.createDatastore(mongoClient, GeneralConfiguration.mongoDatabaseName);
             datastore.delete(datastore.createQuery(classEntity));
             return true;
         } catch (Exception E) {
