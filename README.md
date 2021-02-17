@@ -201,11 +201,11 @@ Maintenant que nos DAOs sont en place, il ne nous reste qu'à créer notre appli
 
 Nous avons fait le choix de faire une application interactive sur laquelle l'utilisateur choisit les actions qu'il veut réaliser sur quelles entités
 
-![menu](D:\Cours\LA2\POO\poo-geo-cache\menu.PNG)
+![menu](menu.PNG)
 
 Cependant, afin de choisir quelle DAO utiliser, la question est posée au lancement de la console, permettant alors d'instancier les classes adéquates 
 
-![initdao](D:\Cours\LA2\POO\poo-geo-cache\initdao.PNG)
+![initdao](initdao.PNG)
 
 ```java
     private void initDao(String mode) {
