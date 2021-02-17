@@ -53,7 +53,7 @@ Nous avons fait le choix de partir sur des clés primaires de type varchar pour 
 
 Nous pouvons dorénavant initialiser le projet et mettre en place notre architecture technique :
 
-![archi](D:\Cours\LA2\POO\poo-geo-cache\archi.png)
+![archi](archi.png)
 
 |  Dossier   | Description                                                  |
 | :--------: | ------------------------------------------------------------ |
@@ -71,7 +71,7 @@ Nous avons réfléchi à un moyen facile de passer de MySQL à MongoDB, pour cec
 
  Ainsi, nous avons adapté ce schéma à notre modèle de données et avons obtenu les classes et interfaces suivantes : 
 
-![dao](D:\Cours\LA2\POO\poo-geo-cache\dao.PNG)
+![dao](dao.PNG)
 
 Nous avons fait le choix de découper de façon bien distincte nos classes JPA/Mongo. Mais comme celles-ci implémentent les mêmes interfaces, nous passerons alors par les interfaces pour les instancier.
 
